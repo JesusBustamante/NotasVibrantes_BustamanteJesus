@@ -2,6 +2,8 @@ package notasvibrantes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class NotasVibrantes {
@@ -45,27 +47,35 @@ public class NotasVibrantes {
         
         System.out.print("SELECCIONE: ");
         
-        int opcion;
-        opcion = sc.nextInt();
-        
-        switch (opcion) {
-            case 1: 
-                listarConciertos();
-                break;
-            case 2:
-                registrarClientes();
-                break;
-            case 3:
-                comprarTicket();
-                break;
-            case 4:
-                verTickePorCliente();
-                break;
-            case 5:
-                cancelarTicket();
-            default:
-                System.out.print("default: ");
+        try {
+            int opcion;
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+                case 1: 
+                    listarConciertos();
+                    break;
+                case 2:
+                    registrarClientes();
+                    break;
+                case 3:
+                    comprarTicket();
+                    break;
+                case 4:
+                    verTickePorCliente();
+                    break;
+                case 5:
+                    cancelarTicket();
+                case 6:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.print("Opción no válida");
+            }
+        } catch (Exception e) {
+            System.out.println("Entrada no válida. Asegúrese de ingresar un número.");
         }
+        sc.close();
     }
     
     static void listarConciertos() {
@@ -85,6 +95,7 @@ public class NotasVibrantes {
             System.out.println("Precio base: $" + c.precioBase + "\n");
             }
         }
+        sc.close();
     }
     
     static void registrarClientes() {
@@ -92,108 +103,116 @@ public class NotasVibrantes {
         System.out.println("\nREGISTRO DE CLIENTE\n-----------------------");
         System.out.println("INGRESE LA INFORMACIÓN SOLICITADA\n");
         
-        sc.nextLine();
-        System.out.print("NOMBRE: ");
-        String nombre = sc.nextLine();
-        System.out.print("\nAPELLIDO: ");
-        String apellido = sc.nextLine();
-        System.out.print("\nCORREO: ");
-        String correo = sc.nextLine();
-        System.out.print("\nTELEFONO: ");
-        String telefono = sc.nextLine();
-        
-        cliente.add(new clientes(contadorId++, nombre, apellido, correo, telefono));
-        System.out.println("\nCLIENTE REGISTRADO");
-        
+        try {
+            sc.nextLine();
+            System.out.print("NOMBRE: ");
+            String nombre = sc.nextLine();
+            System.out.print("\nAPELLIDO: ");
+            String apellido = sc.nextLine();
+            System.out.print("\nCORREO: ");
+            String correo = sc.nextLine();
+            System.out.print("\nTELEFONO: ");
+            String telefono = sc.nextLine();
+
+            cliente.add(new clientes(contadorId++, nombre, apellido, correo, telefono));
+            System.out.println("\nCLIENTE REGISTRADO");
+        } catch (Exception e) {
+            System.out.println("Entrada no válida. Asegúrese de ingresar el tipo de dato correcto.");
+        }
+        sc.close();
     }
     
     static void comprarTicket() {
         System.out.println("\nCOMPRA DE TICKET\n");
         System.out.println("CONCIERTOS DISPONIBLES\n");
         
-        for (conciertos c : concierto) {
-            System.out.println("ID: " + c.ID);
-            System.out.println("Nombre: " + c.nombre);
-            System.out.println("Artista: " + c.artista);
-            System.out.println("Lugar: " + c.lugar);
-            System.out.println("Fecha: " + c.fecha);
-            System.out.println("Precio base: $" + c.precioBase + "\n");
-        }
-
-        System.out.println("INGRESE LA INFORMACIÓN SOLICITADA\n--------------------------------\n");
-        
-        // Solicitar ID del concierto
-        System.out.print("INGRESE EL ID DEL CONCIERTO: ");
-        int idConcierto = sc.nextInt();
-
-        // Solicitar ID del cliente
-        System.out.print("INGRESE EL ID DEL CLIENTE: ");
-        int idCliente = sc.nextInt();
-
-        // Verificar si el concierto existe
-        conciertos conciertoSeleccionado = null;
-        for (conciertos c : concierto) {
-            if (c.ID == idConcierto) {
-                conciertoSeleccionado = c;
-                break;
-            }
-        }
-
-        // Verificar si el cliente existe
-        clientes clienteSeleccionado = null;
-        for (clientes cl : cliente) {
-            if (cl.ID == idCliente) {
-                clienteSeleccionado = cl;
-                break;
-            }
-        }
-
-        // Si ambos existen, proceder con la compra
-        if (conciertoSeleccionado != null && clienteSeleccionado != null) {
-            // Mostrar zonas disponibles y sus precios adicionales
-            System.out.println("\nZONAS DISPONIBLES:\n");
-            System.out.println("1. General - Precio base: $" + conciertoSeleccionado.precioBase);
-            System.out.println("2. VIP - Precio base + $200");
-            System.out.println("3. Platinum - Precio base + $500");
-
-            // Solicitar la zona
-            System.out.print("Seleccione la zona (1-3): ");
-            int opcionZona = sc.nextInt();
-            String zonaSeleccionada = "";
-            double precioFinal = conciertoSeleccionado.precioBase;
-
-            switch (opcionZona) {
-                case 1:
-                    zonaSeleccionada = "General";
-                    break;
-                case 2:
-                    zonaSeleccionada = "VIP";
-                    precioFinal += 200;
-                    break;
-                case 3:
-                    zonaSeleccionada = "Platinum";
-                    precioFinal += 500;
-                    break;
-                default:
-                    System.out.println("Opción de zona no válida.");
-                    return;
+        try {
+            for (conciertos c : concierto) {
+                System.out.println("ID: " + c.ID);
+                System.out.println("Nombre: " + c.nombre);
+                System.out.println("Artista: " + c.artista);
+                System.out.println("Lugar: " + c.lugar);
+                System.out.println("Fecha: " + c.fecha);
+                System.out.println("Precio base: $" + c.precioBase + "\n");
             }
 
-            // Crear un nuevo ticket
-            tickets nuevoTicket = new tickets(contadorId++, idCliente, idConcierto, zonaSeleccionada, precioFinal, LocalDate.now());
-            ticket.add(nuevoTicket);
+            System.out.println("INGRESE LA INFORMACIÓN SOLICITADA\n--------------------------------\n");
 
-            System.out.println("\nTICKET COMPRADO EXITOSAMENTE");
-            System.out.println("ID del Ticket: " + nuevoTicket.ID);
-            System.out.println("Concierto: " + conciertoSeleccionado.nombre);
-            System.out.println("Cliente: " + clienteSeleccionado.nombre + " " + clienteSeleccionado.apellido);
-            System.out.println("Zona: " + nuevoTicket.zona);
-            System.out.println("Precio Final: $" + nuevoTicket.precioFinal);
-            System.out.println("Fecha de Compra: " + nuevoTicket.fechaCompra);
-        } else {
-            System.out.println("CONCIERTO O CLIENTE NO ENCONTRADO");
+            // Solicitar ID del concierto
+            System.out.print("INGRESE EL ID DEL CONCIERTO: ");
+            int idConcierto = sc.nextInt();
+
+            // Solicitar ID del cliente
+            System.out.print("INGRESE EL ID DEL CLIENTE: ");
+            int idCliente = sc.nextInt();
+
+            // Verificar si el concierto existe
+            conciertos conciertoSeleccionado = null;
+            for (conciertos c : concierto) {
+                if (c.ID == idConcierto) {
+                    conciertoSeleccionado = c;
+                    break;
+                }
+            }
+
+            // Verificar si el cliente existe
+            clientes clienteSeleccionado = null;
+            for (clientes cl : cliente) {
+                if (cl.ID == idCliente) {
+                    clienteSeleccionado = cl;
+                    break;
+                }
+            }
+
+            // Si ambos existen, proceder con la compra
+            if (conciertoSeleccionado != null && clienteSeleccionado != null) {
+                // Mostrar zonas disponibles y sus precios adicionales
+                System.out.println("\nZONAS DISPONIBLES:\n");
+                System.out.println("1. General - Precio base: $" + conciertoSeleccionado.precioBase);
+                System.out.println("2. VIP - Precio base + $200");
+                System.out.println("3. Platinum - Precio base + $500");
+
+                // Solicitar la zona
+                System.out.print("Seleccione la zona (1-3): ");
+                int opcionZona = sc.nextInt();
+                String zonaSeleccionada = "";
+                double precioFinal = conciertoSeleccionado.precioBase;
+
+                switch (opcionZona) {
+                    case 1:
+                        zonaSeleccionada = "General";
+                        break;
+                    case 2:
+                        zonaSeleccionada = "VIP";
+                        precioFinal += 200;
+                        break;
+                    case 3:
+                        zonaSeleccionada = "Platinum";
+                        precioFinal += 500;
+                        break;
+                    default:
+                        System.out.println("Opción de zona no válida.");
+                        return;
+                }
+
+                // Crear un nuevo ticket
+                tickets nuevoTicket = new tickets(contadorId++, idCliente, idConcierto, zonaSeleccionada, precioFinal, LocalDate.now());
+                ticket.add(nuevoTicket);
+
+                System.out.println("\nTICKET COMPRADO EXITOSAMENTE");
+                System.out.println("ID del Ticket: " + nuevoTicket.ID);
+                System.out.println("Concierto: " + conciertoSeleccionado.nombre);
+                System.out.println("Cliente: " + clienteSeleccionado.nombre + " " + clienteSeleccionado.apellido);
+                System.out.println("Zona: " + nuevoTicket.zona);
+                System.out.println("Precio Final: $" + nuevoTicket.precioFinal);
+                System.out.println("Fecha de Compra: " + nuevoTicket.fechaCompra);
+            } else {
+                System.out.println("CONCIERTO O CLIENTE NO ENCONTRADO");
+            }
+        } catch (Exception e) {
+            System.out.println("Entrada no válida. Asegúrese de ingresar un número.");
         }
-        
+        sc.close();
     }
     
     static void verTickePorCliente() {
@@ -201,91 +220,136 @@ public class NotasVibrantes {
         System.out.println("\nTICKETS COMPRADOS POR CLIENTE\n");
         System.out.println("INGRESE lA INFORMACIÓN SOLICITADA\n----------------------------------");
         
-        System.out.print("INGRESE EL ID DEL CLIENTE: ");
-        int id = sc.nextInt();
-        
-        clientes clienteEncontrado = null;
-        for (clientes cl : cliente) {
-            if (cl.ID == id) {
-                clienteEncontrado = cl;
-                break;
-            }
-        }
+        try {
+            System.out.print("INGRESE EL ID DEL CLIENTE: ");
+            int id = sc.nextInt();
 
-        if (clienteEncontrado != null) {
-            System.out.println("\n" + clienteEncontrado.nombre + " tus tickets son:\n");
-
-            // Buscar los tickets del cliente
-            for (tickets t : ticket) {
-                if (t.idCliente == clienteEncontrado.ID) {
-                    for (conciertos c : concierto) {
-                        if (c.ID == t.idConcierto) {
-                            System.out.println("ID: " + t.ID + "\n" 
-                                + "Concierto: " + c.nombre + "\n" 
-                                + "Zona: " + t.zona + "\n" 
-                                + "Precio: " + t.precioFinal + "\n" 
-                                + "Fecha de compra: " + t.fechaCompra + "\n");
-                            
-                        }
-                    }
-                }
-            }
-        } else {
-            System.out.println("CLIENTE NO ENCONTRADO");
-        }
-    }
-    
-    static void cancelarTicket() {
-        System.out.println("\nCANCELACIÓN DE TICKET\n");
-
-        System.out.print("INGRESE EL ID DEL CLIENTE: ");
-        int idCliente = sc.nextInt();
-
-        clientes clienteEncontrado = null;
-        for (clientes cl : cliente) {
-            if (cl.ID == idCliente) {
-                clienteEncontrado = cl;
-                break;
-            }
-        }
-
-        if (clienteEncontrado != null) {
-            System.out.println("\n" + clienteEncontrado.nombre + " tus tickets son:\n");
-
-            for (tickets t : ticket) {
-                if (t.idCliente == clienteEncontrado.ID) {
-                    for (conciertos c : concierto) {
-                        if (c.ID == t.idConcierto) {
-                            System.out.println("ID: " + t.ID + "\n" 
-                                + "Concierto: " + c.nombre + "\n" 
-                                + "Zona: " + t.zona + "\n" 
-                                + "Precio: " + t.precioFinal + "\n" 
-                                + "Fecha de compra: " + t.fechaCompra + "\n");
-                        }
-                    }
-                }
-            }
-
-            System.out.print("\nINGRESE EL ID DEL TICKET QUE DESEA CANCELAR: ");
-            int idTicket = sc.nextInt();
-
-            boolean ticketEliminado = false;
-            for (int i = 0; i < ticket.size(); i++) {
-                if (ticket.get(i).ID == idTicket && ticket.get(i).idCliente == idCliente) {
-                    ticket.remove(i);
-                    ticketEliminado = true;
-                    System.out.println("TICKET CANCELADO EXITOSAMENTE");
-                    
+            clientes clienteEncontrado = null;
+            for (clientes cl : cliente) {
+                if (cl.ID == id) {
+                    clienteEncontrado = cl;
                     break;
                 }
             }
 
-            if (!ticketEliminado) {
-                System.out.println("NO SE ENCONTRÓ UN TICKET CON EL ID PROPORCIONADO");
+            if (clienteEncontrado != null) {
+                System.out.println("\n" + clienteEncontrado.nombre + " tus tickets son:\n");
+
+                // Buscar los tickets del cliente
+                for (tickets t : ticket) {
+                    if (t.idCliente == clienteEncontrado.ID) {
+                        for (conciertos c : concierto) {
+                            if (c.ID == t.idConcierto) {
+                                System.out.println("ID: " + t.ID + "\n" 
+                                    + "Concierto: " + c.nombre + "\n" 
+                                    + "Zona: " + t.zona + "\n" 
+                                    + "Precio: " + t.precioFinal + "\n" 
+                                    + "Fecha de compra: " + t.fechaCompra + "\n");
+
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.out.println("CLIENTE NO ENCONTRADO");
+            }
+        } catch (Exception e) {
+            System.out.println("Entrada no válida. Asegúrese de ingresar un número.");
+        }
+        sc.close();
+    }
+    
+    static void cancelarTicket() {
+        System.out.println("CANCELACIÓN DE TICKET\n");
+
+        try {
+            // Solicitar el ID del cliente
+            System.out.print("INGRESE EL ID DEL CLIENTE: ");
+            int idCliente = sc.nextInt();
+
+            // Buscar el cliente por ID
+            clientes clienteEncontrado = null;
+            for (clientes cl : cliente) {
+                if (cl.ID == idCliente) {
+                    clienteEncontrado = cl;
+                    break;
+                }
             }
 
-        } else {
-            System.out.println("CLIENTE NO ENCONTRADO");
+            if (clienteEncontrado != null) {
+                System.out.println("\n" + clienteEncontrado.nombre + " tus tickets son:\n");
+
+                Map<Integer, conciertos> mapaConciertos = new HashMap<>();
+                for (conciertos c : concierto) {
+                    mapaConciertos.put(c.ID, c);
+                }
+
+                boolean tieneTickets = false;
+                for (tickets t : ticket) {
+                    if (t.idCliente == clienteEncontrado.ID) {
+                        tieneTickets = true;
+                        conciertos c = mapaConciertos.get(t.idConcierto);
+                        if (c != null) {
+                            System.out.println("ID: " + t.ID + "\n" 
+                                + "Concierto: " + c.nombre + "\n" 
+                                + "Zona: " + t.zona + "\n" 
+                                + "Precio: " + t.precioFinal + "\n" 
+                                + "Fecha de compra: " + t.fechaCompra + "\n");
+                        }
+                    }
+                }
+
+                if (!tieneTickets) {
+                    System.out.println("NO TIENES TICKETS REGISTRADOS");
+                    return;
+                }
+
+                System.out.print("\nINGRESE EL ID DEL TICKET QUE DESEA CANCELAR: ");
+                int idTicket = sc.nextInt();
+
+                boolean ticketEliminado = false;
+                for (int i = 0; i < ticket.size(); i++) {
+                    if (ticket.get(i).ID == idTicket && ticket.get(i).idCliente == idCliente) {
+
+                        System.out.print("¿ESTÁ SEGURO QUE DESEA CANCELAR SU TICKET? (S/N): ");
+                        String confirmacion = sc.next();
+
+                        if (confirmacion.equalsIgnoreCase("S")) {
+                            ticket.remove(i); // Eliminar el ticket de la lista
+                            ticketEliminado = true;
+                            System.out.println("TICKET CANCELADO EXITOSAMENTE\n");
+                            
+                            System.out.println("\nLISTA DE TICKETS ACTUALIZADA:\n");
+                            for (tickets t : ticket) {
+                                if (t.idCliente == clienteEncontrado.ID) {
+                                    conciertos c = mapaConciertos.get(t.idConcierto);
+                                    if (c != null) {
+                                        System.out.println("ID: " + t.ID + "\n" 
+                                            + "Concierto: " + c.nombre + "\n" 
+                                            + "Zona: " + t.zona + "\n" 
+                                            + "Precio: " + t.precioFinal + "\n" 
+                                            + "Fecha de compra: " + t.fechaCompra + "\n");
+                                    }
+                                }
+                            }
+                        } else {
+                            System.out.println("CANCELACIÓN ABORTADA");
+                        }
+                        break;
+                    }
+                }
+
+                if (!ticketEliminado) {
+                    System.out.println("NO SE ENCONTRÓ UN TICKET CON EL ID PROPORCIONADO");
+                }
+
+            } else {
+                System.out.println("CLIENTE NO ENCONTRADO");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Entrada no válida. Asegúrese de ingresar un número.");
         }
+        sc.close();
     }
 }
