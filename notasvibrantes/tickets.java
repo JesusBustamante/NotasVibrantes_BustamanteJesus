@@ -21,7 +21,7 @@ public class tickets {
     
     @Override
     public String toString() {
-        return "Concierto{" +
+        return "Ticket{" +
                 "id: " + ID +
                 ", ID de cliente: '" + idCliente + '\'' +
                 ", ID de concierto: '" + idConcierto + '\'' +
